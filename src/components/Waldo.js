@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import waldo1 from "./images/waldo1.webp";
 import characters from "./images/characters.webp";
+import waldo from "./images/wally.webp";
+import woof from "./images/woof.webp";
+import wenda from "./images/wenda.webp";
+import whitebeard from "./images/whitebeard.webp";
+import odlaw from "./images/odlaw.webp";
 import { useState } from "react";
 import "./waldo.css";
 
@@ -45,7 +50,31 @@ const Waldo = () => {
   const popup = (
     <div style={mouseCursor} id="popup" className="userClick">
       <form>
-        <input type={"text"} />
+        <p className="inputLine">
+          <input type={"radio"} name="charSelect" />{" "}
+          <img src={waldo} alt="waldo" />
+          <span>Waldo</span>
+        </p>
+        <p className="inputLine">
+          <input type={"radio"} name="charSelect" />{" "}
+          <img src={woof} alt="woof" />
+          <span>Woof</span>
+        </p>
+        <p className="inputLine">
+          <input type={"radio"} name="charSelect" />{" "}
+          <img src={wenda} alt="wenda" />
+          <span>Wenda</span>
+        </p>
+        <p className="inputLine">
+          <input type={"radio"} name="charSelect" />{" "}
+          <img src={whitebeard} alt="whitebeard" />
+          <span>Whitebeard</span>
+        </p>
+        <p className="inputLine">
+          <input type={"radio"} name="charSelect" />{" "}
+          <img src={odlaw} alt="Odlaw" />
+          <span>Odlaw</span>
+        </p>
         <button type="submit" onClick={submitAnswer}>
           Submit
         </button>

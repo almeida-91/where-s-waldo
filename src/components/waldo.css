@@ -1,11 +1,18 @@
 .userClick {
     width: 200px;
-    height: 400px;
+    height: fit-content;
     background-color: white;
     position: absolute;
     display: none;
 }
 
 .showPopUp {
-    display: block;
+    display: flex;
+    grid-template-columns: 2fr;
+    flex-direction: column;
+}
+
+.inputLine {
+    display: flex;
+    align-items: center;
 }
