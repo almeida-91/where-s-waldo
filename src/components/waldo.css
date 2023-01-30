@@ -1,0 +1,11 @@
+.userClick {
+    width: 200px;
+    height: 400px;
+    background-color: white;
+    position: absolute;
+    display: none;
+}
+
+.showPopUp {
+    display: block;
+}
