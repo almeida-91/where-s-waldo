@@ -30,7 +30,7 @@ const Waldo = () => {
     setposY(e.pageY - currentImage.offsetTop + currentImage.scrollTop);
   }
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     isActive ? setisActive(false) : setisActive(true);
     document.getElementById("popup").classList.add("showPopUp");
     console.log(posX, posY);
@@ -50,31 +50,41 @@ const Waldo = () => {
   const popup = (
     <div style={mouseCursor} id="popup" className="userClick">
       <form>
-        <p className="inputLine">
-          <input type={"radio"} name="charSelect" />{" "}
-          <img src={waldo} alt="waldo" />
-          <span>Waldo</span>
-        </p>
-        <p className="inputLine">
-          <input type={"radio"} name="charSelect" />{" "}
-          <img src={woof} alt="woof" />
-          <span>Woof</span>
-        </p>
-        <p className="inputLine">
-          <input type={"radio"} name="charSelect" />{" "}
-          <img src={wenda} alt="wenda" />
-          <span>Wenda</span>
-        </p>
-        <p className="inputLine">
-          <input type={"radio"} name="charSelect" />{" "}
-          <img src={whitebeard} alt="whitebeard" />
-          <span>Whitebeard</span>
-        </p>
-        <p className="inputLine">
-          <input type={"radio"} name="charSelect" />{" "}
-          <img src={odlaw} alt="Odlaw" />
-          <span>Odlaw</span>
-        </p>
+        <label htmlFor="waldo">
+          <p className="inputLine">
+            <input type={"radio"} name="charSelect" id="waldo" />{" "}
+            <img src={waldo} alt="waldo" />
+            <span>Waldo</span>
+          </p>
+        </label>
+        <label htmlFor="woof">
+          <p className="inputLine">
+            <input type={"radio"} name="charSelect" id="woof" />{" "}
+            <img src={woof} alt="woof" />
+            <span>Woof</span>
+          </p>
+        </label>
+        <label htmlFor="wenda">
+          <p className="inputLine">
+            <input type={"radio"} name="charSelect" id="wenda" />{" "}
+            <img src={wenda} alt="wenda" />
+            <span>Wenda</span>
+          </p>
+        </label>
+        <label htmlFor="whitebeard">
+          <p className="inputLine">
+            <input type={"radio"} name="charSelect" id="whitebeard" />{" "}
+            <img src={whitebeard} alt="whitebeard" />
+            <span>Whitebeard</span>
+          </p>
+        </label>
+        <label htmlFor="odlaw">
+          <p className="inputLine">
+            <input type={"radio"} name="charSelect" id="odlaw" />{" "}
+            <img src={odlaw} alt="odlaw" />
+            <span>Odlaw</span>
+          </p>
+        </label>
         <button type="submit" onClick={submitAnswer}>
           Submit
         </button>
