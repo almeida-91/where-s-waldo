@@ -1,3 +1,7 @@
+* {
+    margin: 0;
+}
+
 .userClick {
     width: 200px;
     height: fit-content;
@@ -19,9 +23,11 @@
 
 .imagePreview {
     height: 150px;
+    border: 3px solid rgb(113, 103, 103);
+    border-radius: 10px;
 }
 
 .imagePreviewContainer {
     display: grid;
-    grid-template-columns: minmax(auto-fit, 1fr)
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }

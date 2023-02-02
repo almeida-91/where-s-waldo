@@ -15,12 +15,13 @@ import { useState } from "react";
 import "./waldo.css";
 
 const Waldo = () => {
-  const [posX, setposX] = useState();
+  const [posX, setposX] = useState(0);
   const [posY, setposY] = useState(0);
   const [isActive, setisActive] = useState(false);
   const [selectedImage, setSelectedImage] = useState(waldo1);
   const imageArray = [waldo1, waldo2, waldo3, waldo4];
 
+  const [globalMousePos, setGlobalMousePos] = useState({});
   const mouseCursor = {
     left: posX + "px",
     top: posY + "px",
@@ -37,7 +38,11 @@ const Waldo = () => {
     setposY(e.pageY - currentImage.offsetTop + currentImage.scrollTop);
   }
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    setGlobalMousePos({
+      left: e.pageX + "px",
+      top: e.pageY + "px",
+    });
     isActive ? setisActive(false) : setisActive(true);
     document.getElementById("popup").classList.add("showPopUp");
     console.log(posX, posY);
@@ -65,7 +70,7 @@ const Waldo = () => {
   );
 
   const popup = (
-    <div style={mouseCursor} id="popup" className="userClick">
+    <div style={globalMousePos} id="popup" className="userClick">
       <form>
         <label htmlFor="waldo">
           <p className="inputLine">
