@@ -71,7 +71,7 @@ const Waldo = () => {
 
   const popup = (
     <div style={globalMousePos} id="popup" className="userClick">
-      <form>
+      <form onSubmit={submitAnswer}>
         <label htmlFor="waldo">
           <p className="inputLine">
             <input type={"radio"} name="charSelect" id="waldo" />{" "}
@@ -107,9 +107,7 @@ const Waldo = () => {
             <span>Odlaw</span>
           </p>
         </label>
-        <button type="submit" onClick={submitAnswer}>
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

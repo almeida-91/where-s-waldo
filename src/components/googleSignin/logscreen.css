@@ -1,0 +1,15 @@
+.login {
+    display: flex;
+    align-items: center;
+}
+
+.userPic {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.userPic img {
+    border-radius: 100%;
+    margin: 10px;
+}
