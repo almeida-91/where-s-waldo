@@ -16,3 +16,12 @@
     display: flex;
     align-items: center;
 }
+
+.imagePreview {
+    height: 150px;
+}
+
+.imagePreviewContainer {
+    display: grid;
+    grid-template-columns: minmax(auto-fit, 1fr)
+}

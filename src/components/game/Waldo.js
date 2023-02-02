@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
-import waldo1 from "./images/waldo1.webp";
+
+import waldo1 from "./images/waldo1.jpeg";
+import waldo2 from "./images/waldo2.jpeg";
+import waldo3 from "./images/waldo3.jpeg";
+import waldo4 from "./images/waldo4.jpeg";
 import characters from "./images/characters.webp";
 import waldo from "./images/wally.webp";
 import woof from "./images/woof.webp";
 import wenda from "./images/wenda.webp";
 import whitebeard from "./images/whitebeard.webp";
 import odlaw from "./images/odlaw.webp";
+
 import { useState } from "react";
 import "./waldo.css";
 
@@ -13,6 +18,8 @@ const Waldo = () => {
   const [posX, setposX] = useState();
   const [posY, setposY] = useState(0);
   const [isActive, setisActive] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(waldo1);
+  const imageArray = [waldo1, waldo2, waldo3, waldo4];
 
   const mouseCursor = {
     left: posX + "px",
@@ -37,10 +44,20 @@ const Waldo = () => {
     console.log(isActive);
   };
 
+  const imageList = imageArray.map((image, index) => (
+    <img
+      key={index}
+      className="imagePreview"
+      src={image}
+      onClick={() => setSelectedImage(image)}
+      alt="game preview"
+    />
+  ));
+
   const Image = (
     <img
       id="wally1"
-      src={waldo1}
+      src={selectedImage}
       alt="Where's Waldo game"
       onMouseMove={handleMove}
       onClick={handleClick}
@@ -96,6 +113,7 @@ const Waldo = () => {
 
   return (
     <div>
+      <div className="imagePreviewContainer">{imageList}</div>
       <p>Find the following characters in the picture:</p>
       <img src={characters} alt="Characters" />
       <div>

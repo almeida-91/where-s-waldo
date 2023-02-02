@@ -1,5 +1,8 @@
 {
   "projects": {
     "default": "where-s-waldo-afc67"
+  },
+  "hosting": {
+    "public": "public"
   }
 }
