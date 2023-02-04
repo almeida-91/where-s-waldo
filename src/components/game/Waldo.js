@@ -13,7 +13,7 @@ import odlaw from "./images/odlaw.webp";
 
 import { useState } from "react";
 import "./waldo.css";
-import { getSolutions } from "./serverdata";
+import { getRecords, getSolutions } from "./serverdata";
 
 const Waldo = () => {
   const [posX, setposX] = useState(0);
@@ -26,6 +26,9 @@ const Waldo = () => {
   const charImages = [waldo, woof, wenda, whitebeard, odlaw];
   const [selectedImageIndex, setSelectedImageIndex] = useState(1);
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+  const [initialTime, setInitialTime] = useState();
+  const [foundCharacters, setFoundCharacters] = useState([]);
+  const [leaderBoard, setLeaderBoard] = useState([]);
 
   const [globalMousePos, setGlobalMousePos] = useState({});
   const mouseCursor = {
@@ -107,18 +110,23 @@ const Waldo = () => {
   async function submitAnswer(e) {
     e.preventDefault();
     document.getElementById("popup").classList.remove("showPopUp");
-    setisActive(false);
+    setisActive(true);
     const answer = await getCharacter(selectedChar, selectedImageIndex);
     const deltaX = clickPosition.x - answer.charCoordX;
     const deltaY = clickPosition.y - answer.charCoordY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (distance < answer.charRadius) {
-      console.log("success");
+      console.log(`Found ${selectedChar}`);
+      if (!foundCharacters.includes(selectedChar)) {
+        setFoundCharacters([...foundCharacters, selectedChar]);
+      }
     } else {
       console.log("nope");
     }
   }
 
+  // Get coordinates and radius for the character we're checking
+  // from the backend
   async function getCharacter(character, imageindex) {
     let answer = await getSolutions(imageindex);
     let characterCoords;
@@ -164,7 +172,30 @@ const Waldo = () => {
     return characterCoords;
   }
 
-  useEffect(() => {}, []);
+  // Get leaderboard results when
+  useEffect(() => {
+    console.log(foundCharacters);
+    if (foundCharacters.length === 5) {
+      console.log("found all chars");
+    }
+    const records = async function () {
+      const data = await getRecords(selectedImageIndex);
+      console.log(data);
+      Array.from(data).map((record) => (
+        <div key={record[0]}>
+          <span>{record[0]}</span>
+          <span>{record[1]}</span>
+        </div>
+      ));
+    };
+    records();
+  }, [foundCharacters]);
+
+  useEffect(() => {
+    setInitialTime(new Date());
+    console.log(initialTime);
+  }, [selectedImage]);
+
   return (
     <div>
       <div className="imagePreviewContainer">{imageList}</div>
