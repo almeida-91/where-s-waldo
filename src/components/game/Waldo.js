@@ -36,6 +36,7 @@ const Waldo = () => {
   const [gameTime, setGameTime] = useState(null);
   const [endTime, setEndTime] = useState();
   const [globalMousePos, setGlobalMousePos] = useState({});
+  const [recordTable, setRecordTable] = useState();
   const mouseCursor = {
     left: posX + "px",
     top: posY + "px",
@@ -70,6 +71,8 @@ const Waldo = () => {
       onClick={() => {
         setSelectedImage(image);
         setSelectedImageIndex(index + 1);
+        setInitialTime(new Date());
+        setFoundCharacters([]);
       }}
       alt="game preview"
     />
@@ -112,6 +115,8 @@ const Waldo = () => {
     </div>
   );
 
+  // Check the backend to check if the mouse was clicked withing that
+  // character's radius
   async function submitAnswer(e) {
     e.preventDefault();
     document.getElementById("popup").classList.remove("showPopUp");
@@ -177,20 +182,8 @@ const Waldo = () => {
     return characterCoords;
   }
 
-  // Get leaderboard results when
-  // player finds the 5 characters
+  // Get game time when player finds 5 characters
   useEffect(() => {
-    const records = async function () {
-      const data = await getRecords(selectedImageIndex);
-      const recordsLog = [
-        data.record1,
-        data.record2,
-        data.record3,
-        data.record4,
-        data.record5,
-      ];
-    };
-
     console.log(foundCharacters);
     if (foundCharacters.length === 5) {
       console.log("found all chars");
@@ -202,13 +195,54 @@ const Waldo = () => {
       }
       findChars();
     }
-
-    records();
   }, [foundCharacters, selectedImageIndex]);
 
+  // Get leaderboard results when
+  // player selects a picture
   useEffect(() => {
     setInitialTime(new Date());
   }, []);
+
+  useEffect(() => {
+    const records = async function () {
+      const data = await getRecords(selectedImageIndex);
+      const recordsLog = [
+        data.record1,
+        data.record2,
+        data.record3,
+        data.record4,
+        data.record5,
+      ];
+      setRecordTable(recordsLog);
+    };
+
+    const writeRecords = async () => {
+      await records();
+      if (recordTable) {
+        let recordFormat = recordTable.map((record) => (
+          <tr key={record}>
+            <td>{record[0]}</td>
+            <td>{record[1]}</td>
+          </tr>
+        ));
+
+        setLeaderBoard(
+          <div>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>Record</th>
+                </tr>
+                {recordFormat}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+    };
+    writeRecords();
+  }, [recordTable]);
 
   const calculateTime = async () => {
     console.log("test");
