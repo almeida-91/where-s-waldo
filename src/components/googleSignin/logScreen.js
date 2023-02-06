@@ -12,13 +12,12 @@ const LogScreen = () => {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user);
       setName(user.displayName);
       setIsLoggedIn(true);
       setUserPic(user.photoURL);
     } else {
       setIsLoggedIn(false);
-      console.log(user);
+      setName("Anonymous");
     }
   });
 
@@ -32,13 +31,16 @@ const LogScreen = () => {
         <div className="login">
           <span>Welcome, {name} </span>
           <div className="userPic">
-            <img src={userPic} />
+            <img src={userPic} alt="user profile" />
 
             <button onClick={handleClick}>Logout</button>
           </div>
         </div>
       ) : (
-        <SignIn />
+        <div className="login">
+          <span>Welcome, {name} </span>
+          <SignIn />
+        </div>
       )}
     </div>
   );

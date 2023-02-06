@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import "moment/locale/pt";
+import moment, { min } from "moment-timezone";
 
 import waldo1 from "./images/waldo1.jpeg";
 import waldo2 from "./images/waldo2.jpeg";
@@ -14,6 +16,8 @@ import odlaw from "./images/odlaw.webp";
 import { useState } from "react";
 import "./waldo.css";
 import { getRecords, getSolutions } from "./serverdata";
+import { async } from "@firebase/util";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 const Waldo = () => {
   const [posX, setposX] = useState(0);
@@ -29,7 +33,8 @@ const Waldo = () => {
   const [initialTime, setInitialTime] = useState();
   const [foundCharacters, setFoundCharacters] = useState([]);
   const [leaderBoard, setLeaderBoard] = useState([]);
-
+  const [gameTime, setGameTime] = useState(null);
+  const [endTime, setEndTime] = useState();
   const [globalMousePos, setGlobalMousePos] = useState({});
   const mouseCursor = {
     left: posX + "px",
@@ -173,28 +178,53 @@ const Waldo = () => {
   }
 
   // Get leaderboard results when
+  // player finds the 5 characters
   useEffect(() => {
+    const records = async function () {
+      const data = await getRecords(selectedImageIndex);
+      const recordsLog = [
+        data.record1,
+        data.record2,
+        data.record3,
+        data.record4,
+        data.record5,
+      ];
+    };
+
     console.log(foundCharacters);
     if (foundCharacters.length === 5) {
       console.log("found all chars");
+      calculateTime();
+    } else {
+      async function findChars() {
+        await wait(3000);
+        setFoundCharacters([1, 2, 3, 4, 5]);
+      }
+      findChars();
     }
-    const records = async function () {
-      const data = await getRecords(selectedImageIndex);
-      console.log(data);
-      Array.from(data).map((record) => (
-        <div key={record[0]}>
-          <span>{record[0]}</span>
-          <span>{record[1]}</span>
-        </div>
-      ));
-    };
+
     records();
-  }, [foundCharacters]);
+  }, [foundCharacters, selectedImageIndex]);
 
   useEffect(() => {
     setInitialTime(new Date());
-    console.log(initialTime);
-  }, [selectedImage]);
+  }, []);
+
+  const calculateTime = async () => {
+    console.log("test");
+    setEndTime(new Date());
+    const end = new Date();
+    if (end) {
+      const timeDelta = end - initialTime;
+      const minutesSeconds = moment.utc(timeDelta).format("mm:ss");
+      const hours = Math.floor(moment.duration(timeDelta).asHours());
+      setGameTime("HH:MM:SS", hours + ":" + minutesSeconds);
+      console.log("HH:MM:SS", hours + ":" + minutesSeconds);
+      console.log(gameTime);
+      console.log(`end time: ${end}`);
+      console.log(`start time: ${initialTime}`);
+    }
+  };
 
   return (
     <div>
@@ -206,6 +236,7 @@ const Waldo = () => {
       </div>
       {Image}
       {popup}
+      {leaderBoard}
     </div>
   );
 };

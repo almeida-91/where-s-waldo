@@ -6,9 +6,7 @@ async function getSolutions(imageIndex) {
   const docRef = doc(db, "solutions", "image" + imageIndex);
   const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-  } else {
+  if (!docSnap.exists()) {
     // doc.data() will be undefined in this case
     console.log("No such document!");
   }
@@ -19,9 +17,7 @@ async function getRecords(imageIndex) {
   const docRef = doc(db, "records", "image" + imageIndex);
   const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-  } else {
+  if (!docSnap.exists()) {
     // doc.data() will be undefined in this case
     console.log("No such document!");
   }
