@@ -40,3 +40,11 @@
     bottom:0px;
     left:0px;
 }
+
+.foundChar {
+    position: absolute;
+    color: greenyellow;
+    font-size: 100px;
+    font-weight: 800;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}

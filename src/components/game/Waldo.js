@@ -37,6 +37,8 @@ const Waldo = () => {
   const [endTime, setEndTime] = useState(null);
   const [globalMousePos, setGlobalMousePos] = useState({});
   const [recordTable, setRecordTable] = useState();
+  const [foundPositions, setFoundPositions] = useState([]);
+  const [markers, setMarkers] = useState();
 
   function handleMove(e) {
     let currentImage = document.getElementById("wally1");
@@ -47,8 +49,8 @@ const Waldo = () => {
   const handleClick = (e) => {
     setClickPosition({ x: posX, y: posY });
     setGlobalMousePos({
-      left: e.pageX + "px",
-      top: e.pageY + "px",
+      left: e.pageX,
+      top: e.pageY,
     });
     setisActive(!isActive);
 
@@ -102,8 +104,18 @@ const Waldo = () => {
     </label>
   ));
 
+  const foundCharacter = () => {
+    const x = globalMousePos.left - 50 + "px";
+    const y = globalMousePos.top - 50 + "px";
+    return { left: x, top: y };
+  };
+
+  const popupStyle = {
+    left: globalMousePos.left + "px",
+    top: globalMousePos.top + "px",
+  };
   const popup = (
-    <div style={globalMousePos} id="popup" className="userClick">
+    <div style={popupStyle} id="popup" className="userClick">
       <form onSubmit={submitAnswer}>
         {characterSelection}
         <button type="submit">Submit</button>
@@ -125,11 +137,22 @@ const Waldo = () => {
       console.log(`Found ${selectedChar}`);
       if (!foundCharacters.includes(selectedChar)) {
         setFoundCharacters([...foundCharacters, selectedChar]);
+        setFoundPositions([...foundPositions, foundCharacter()]);
+        console.log(foundPositions);
       }
     } else {
       console.log("nope");
     }
   }
+
+  const getMarkers = () => {
+    const markers = foundPositions.map((position, index) => (
+      <div key={index} style={position} className="foundChar">
+        O
+      </div>
+    ));
+    setMarkers(markers);
+  };
 
   // Get coordinates and radius for the character we're checking
   // from the backend
@@ -191,6 +214,8 @@ const Waldo = () => {
       }
       findChars();
     } */
+    getMarkers();
+    console.log(markers);
   }, [foundCharacters, selectedImageIndex]);
 
   // Get leaderboard results when
@@ -242,7 +267,7 @@ const Waldo = () => {
         </div>
       );
     }
-  }, [selectedImage]);
+  }, [selectedImage, recordTable]);
 
   const calculateTime = async () => {
     console.log("test");
@@ -264,6 +289,7 @@ const Waldo = () => {
     setEndTime(null);
     setGameTime(null);
     setFoundCharacters([]);
+    setFoundPositions([]);
     setInitialTime(new Date());
   }
 
@@ -278,6 +304,7 @@ const Waldo = () => {
       {Image}
       {popup}
       {leaderBoard}
+      {markers}
       {endTime ? showLeaderBoard : null}
     </div>
   );
