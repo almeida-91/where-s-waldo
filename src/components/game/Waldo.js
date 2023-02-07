@@ -34,13 +34,9 @@ const Waldo = () => {
   const [foundCharacters, setFoundCharacters] = useState([]);
   const [leaderBoard, setLeaderBoard] = useState([]);
   const [gameTime, setGameTime] = useState(null);
-  const [endTime, setEndTime] = useState();
+  const [endTime, setEndTime] = useState(null);
   const [globalMousePos, setGlobalMousePos] = useState({});
   const [recordTable, setRecordTable] = useState();
-  const mouseCursor = {
-    left: posX + "px",
-    top: posY + "px",
-  };
 
   function handleMove(e) {
     let currentImage = document.getElementById("wally1");
@@ -188,13 +184,13 @@ const Waldo = () => {
     if (foundCharacters.length === 5) {
       console.log("found all chars");
       calculateTime();
-    } else {
+    } /* else {
       async function findChars() {
         await wait(3000);
         setFoundCharacters([1, 2, 3, 4, 5]);
       }
       findChars();
-    }
+    } */
   }, [foundCharacters, selectedImageIndex]);
 
   // Get leaderboard results when
@@ -202,6 +198,14 @@ const Waldo = () => {
   useEffect(() => {
     setInitialTime(new Date());
   }, []);
+
+  // Show leaderboard when the game is finished
+  const showLeaderBoard = (
+    <div className="endGame">
+      {leaderBoard}
+      <button onClick={restartGame}>Reset</button>
+    </div>
+  );
 
   useEffect(() => {
     const records = async function () {
@@ -215,34 +219,30 @@ const Waldo = () => {
       ];
       setRecordTable(recordsLog);
     };
+    records();
+    if (recordTable) {
+      let recordFormat = recordTable.map((record) => (
+        <tr key={record}>
+          <td>{record[0]}</td>
+          <td>{record[1]}</td>
+        </tr>
+      ));
 
-    const writeRecords = async () => {
-      await records();
-      if (recordTable) {
-        let recordFormat = recordTable.map((record) => (
-          <tr key={record}>
-            <td>{record[0]}</td>
-            <td>{record[1]}</td>
-          </tr>
-        ));
-
-        setLeaderBoard(
-          <div>
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Record</th>
-                </tr>
-                {recordFormat}
-              </tbody>
-            </table>
-          </div>
-        );
-      }
-    };
-    writeRecords();
-  }, [recordTable]);
+      setLeaderBoard(
+        <div>
+          <table>
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th>Record</th>
+              </tr>
+              {recordFormat}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+  }, [selectedImage]);
 
   const calculateTime = async () => {
     console.log("test");
@@ -260,6 +260,13 @@ const Waldo = () => {
     }
   };
 
+  function restartGame() {
+    setEndTime(null);
+    setGameTime(null);
+    setFoundCharacters([]);
+    setInitialTime(new Date());
+  }
+
   return (
     <div>
       <div className="imagePreviewContainer">{imageList}</div>
@@ -271,6 +278,7 @@ const Waldo = () => {
       {Image}
       {popup}
       {leaderBoard}
+      {endTime ? showLeaderBoard : null}
     </div>
   );
 };
