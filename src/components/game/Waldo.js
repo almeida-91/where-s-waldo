@@ -246,21 +246,15 @@ const Waldo = () => {
   useEffect(() => {
     const records = async function () {
       const data = await getRecords(selectedImageIndex);
-      const recordsLog = [
-        data.record1,
-        data.record2,
-        data.record3,
-        data.record4,
-        data.record5,
-      ];
+      const recordsLog = data.records;
       setRecordTable(recordsLog);
     };
     records();
     if (recordTable) {
-      let recordFormat = recordTable.map((record) => (
-        <tr key={record}>
-          <td>{record[0]}</td>
-          <td>{record[1]}</td>
+      let recordFormat = recordTable.map((record, index) => (
+        <tr key={index}>
+          <td>{record.name}</td>
+          <td>{record.time}</td>
         </tr>
       ));
 
