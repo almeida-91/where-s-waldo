@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import "./logscreen.css";
 
 const auth = getAuth();
+export let loggedUser;
 
 const LogScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,6 +16,7 @@ const LogScreen = () => {
       setName(user.displayName);
       setIsLoggedIn(true);
       setUserPic(user.photoURL);
+      loggedUser = user;
     } else {
       setIsLoggedIn(false);
       setName("Anonymous");

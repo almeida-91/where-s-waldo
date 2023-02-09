@@ -18,6 +18,7 @@ import "./waldo.css";
 import { getRecords, getSolutions } from "./serverdata";
 import { async } from "@firebase/util";
 import { wait } from "@testing-library/user-event/dist/utils";
+import { loggedUser } from "../googleSignin/logScreen";
 
 const Waldo = () => {
   const [posX, setposX] = useState(0);
@@ -228,6 +229,16 @@ const Waldo = () => {
   const showLeaderBoard = (
     <div className="endGame">
       {leaderBoard}
+      <div>
+        {loggedUser ? (
+          <>
+            <span>{loggedUser.displayName}</span>
+            <span>{gameTime}</span>
+          </>
+        ) : (
+          <div></div>
+        )}
+      </div>
       <button onClick={restartGame}>Reset</button>
     </div>
   );
@@ -277,8 +288,8 @@ const Waldo = () => {
       const timeDelta = end - initialTime;
       const minutesSeconds = moment.utc(timeDelta).format("mm:ss");
       const hours = Math.floor(moment.duration(timeDelta).asHours());
-      setGameTime("HH:MM:SS", hours + ":" + minutesSeconds);
-      console.log("HH:MM:SS", hours + ":" + minutesSeconds);
+      setGameTime(hours + ":" + minutesSeconds);
+      console.log(hours + ":" + minutesSeconds);
       console.log(gameTime);
       console.log(`end time: ${end}`);
       console.log(`start time: ${initialTime}`);
