@@ -29,21 +29,18 @@ const LogScreen = () => {
 
   return (
     <div>
-      {isLoggedIn ? (
-        <div className="login">
-          <span>Welcome, {name} </span>
+      <div className="login">
+        <span>Welcome, {name} </span>
+        {isLoggedIn ? (
           <div className="userPic">
             <img src={userPic} alt="user profile" />
 
             <button onClick={handleClick}>Logout</button>
           </div>
-        </div>
-      ) : (
-        <div className="login">
-          <span>Welcome, {name} </span>
+        ) : (
           <SignIn />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

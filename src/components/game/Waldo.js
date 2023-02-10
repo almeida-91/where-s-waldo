@@ -15,7 +15,7 @@ import odlaw from "./images/odlaw.webp";
 
 import { useState } from "react";
 import "./waldo.css";
-import { getRecords, getSolutions } from "./serverdata";
+import { getRecords, getSolutions, saveNewHighScore } from "./serverdata";
 import { async } from "@firebase/util";
 import { wait } from "@testing-library/user-event/dist/utils";
 import { loggedUser } from "../googleSignin/logScreen";
@@ -40,6 +40,9 @@ const Waldo = () => {
   const [recordTable, setRecordTable] = useState();
   const [foundPositions, setFoundPositions] = useState([]);
   const [markers, setMarkers] = useState();
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
+  const [timeDelta, setTimeDelta] = useState();
+  const [score, setScore] = useState();
 
   function handleMove(e) {
     let currentImage = document.getElementById("wally1");
@@ -124,7 +127,7 @@ const Waldo = () => {
     </div>
   );
 
-  // Check the backend to check if the mouse was clicked withing that
+  // Check the backend to check if the mouse was clicked within that
   // character's radius
   async function submitAnswer(e) {
     e.preventDefault();
@@ -222,8 +225,29 @@ const Waldo = () => {
   // Get leaderboard results when
   // player selects a picture
   useEffect(() => {
-    setInitialTime(new Date());
-  }, []);
+    restartGame();
+  }, [selectedImageIndex]);
+
+  // Check if the score is a high score
+  const isHighScore = () => {
+    if (timeDelta < recordTable[4].score) {
+      return true;
+    }
+    return false;
+  };
+
+  const newScore = () => {
+    const score = {
+      name: loggedUser.displayName,
+      time: gameTime,
+      score: timeDelta,
+    };
+    return score;
+  };
+
+  const saveHighScore = async () => {
+    await saveNewHighScore(selectedImageIndex, newScore());
+  };
 
   // Show leaderboard when the game is finished
   const showLeaderBoard = (
@@ -239,11 +263,17 @@ const Waldo = () => {
           <div></div>
         )}
       </div>
+      {endTime && isHighScore() ? (
+        <div>
+          New High Score
+          <button onClick={saveHighScore}>Save High Score</button>
+        </div>
+      ) : null}
       <button onClick={restartGame}>Reset</button>
     </div>
   );
 
-  useEffect(() => {
+  const getScores = () => {
     const records = async function () {
       const data = await getRecords(selectedImageIndex);
       const recordsLog = data.records;
@@ -272,21 +302,25 @@ const Waldo = () => {
         </div>
       );
     }
-  }, [selectedImage, recordTable]);
+  };
 
   const calculateTime = async () => {
-    console.log("test");
     setEndTime(new Date());
     const end = new Date();
     if (end) {
+      setTimeDelta(end - initialTime);
       const timeDelta = end - initialTime;
       const minutesSeconds = moment.utc(timeDelta).format("mm:ss");
       const hours = Math.floor(moment.duration(timeDelta).asHours());
       setGameTime(hours + ":" + minutesSeconds);
       console.log(hours + ":" + minutesSeconds);
       console.log(gameTime);
+      console.log(timeDelta);
       console.log(`end time: ${end}`);
       console.log(`start time: ${initialTime}`);
+      if (timeDelta < recordTable[recordTable.length - 1]) {
+        setIsNewHighScore(true);
+      }
     }
   };
 
@@ -296,6 +330,8 @@ const Waldo = () => {
     setFoundCharacters([]);
     setFoundPositions([]);
     setInitialTime(new Date());
+    setIsNewHighScore(false);
+    getScores();
   }
 
   return (
