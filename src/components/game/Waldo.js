@@ -19,6 +19,7 @@ import { getRecords, getSolutions, saveNewHighScore } from "./serverdata";
 import { async } from "@firebase/util";
 import { wait } from "@testing-library/user-event/dist/utils";
 import { loggedUser } from "../googleSignin/logScreen";
+import LeaderBoard from "./LeaderBoard";
 
 const Waldo = () => {
   const [posX, setposX] = useState(0);
@@ -70,11 +71,12 @@ const Waldo = () => {
       key={index}
       className="imagePreview"
       src={image}
-      onClick={() => {
+      onClick={async () => {
         setSelectedImage(image);
         setSelectedImageIndex(index + 1);
         setInitialTime(new Date());
         setFoundCharacters([]);
+        await getScores();
       }}
       alt="game preview"
     />
@@ -207,7 +209,6 @@ const Waldo = () => {
 
   // Get game time when player finds 5 characters
   useEffect(() => {
-    console.log(foundCharacters);
     if (foundCharacters.length === 5) {
       console.log("found all chars");
       calculateTime();
@@ -219,17 +220,18 @@ const Waldo = () => {
       findChars();
     } */
     getMarkers();
-    console.log(markers);
   }, [foundCharacters, selectedImageIndex]);
 
   // Get leaderboard results when
   // player selects a picture
   useEffect(() => {
     restartGame();
+    getScores();
   }, [selectedImageIndex]);
 
   // Check if the score is a high score
   const isHighScore = () => {
+    const sortedScores = recordTable.sort((a, b) => a.score - b.score);
     if (timeDelta < recordTable[4].score) {
       return true;
     }
@@ -273,13 +275,15 @@ const Waldo = () => {
     </div>
   );
 
-  const getScores = () => {
+  const getScores = async () => {
+    let recordsLog = null;
     const records = async function () {
       const data = await getRecords(selectedImageIndex);
-      const recordsLog = data.records;
+      recordsLog = data.records;
       setRecordTable(recordsLog);
     };
-    records();
+    await records();
+    console.log("table: " + recordTable);
     if (recordTable) {
       let recordFormat = recordTable.map((record, index) => (
         <tr key={index}>
@@ -313,11 +317,6 @@ const Waldo = () => {
       const minutesSeconds = moment.utc(timeDelta).format("mm:ss");
       const hours = Math.floor(moment.duration(timeDelta).asHours());
       setGameTime(hours + ":" + minutesSeconds);
-      console.log(hours + ":" + minutesSeconds);
-      console.log(gameTime);
-      console.log(timeDelta);
-      console.log(`end time: ${end}`);
-      console.log(`start time: ${initialTime}`);
       if (timeDelta < recordTable[recordTable.length - 1]) {
         setIsNewHighScore(true);
       }
@@ -344,7 +343,7 @@ const Waldo = () => {
       </div>
       {Image}
       {popup}
-      {leaderBoard}
+      <LeaderBoard imageIndex={selectedImageIndex} />
       {markers}
       {endTime ? showLeaderBoard : null}
     </div>

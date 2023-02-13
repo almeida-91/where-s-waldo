@@ -1,12 +1,10 @@
 import { db } from "../googleSignin/config";
 import {
-  collection,
   doc,
-  setDoc,
   getDoc,
-  getDocs,
   updateDoc,
   arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 
 async function getSolutions(imageIndex) {
@@ -28,9 +26,11 @@ async function getRecords(imageIndex) {
     // doc.data() will be undefined in this case
     console.log("No such document!");
   }
+
   return docSnap.data();
 }
 
+// Saves the new high score and removes the lowest one from firebase
 async function saveNewHighScore(imageIndex, newScore) {
   console.log("new score: " + newScore);
   const docRef = doc(db, "records", "image" + imageIndex);
@@ -41,9 +41,12 @@ async function saveNewHighScore(imageIndex, newScore) {
   scoreArray.push(newScore);
   scoreArray.sort((a, b) => a.score - b.score);
   scoreArray.pop();
-  scoreArray = Object.assign({}, scoreArray);
+  scoreArray = scoreArray.map((element) => Object.assign({}, element));
 
-  await setDoc(docRef, scoreArray);
+  await updateDoc(docRef, {
+    records: arrayRemove(scoreArray[scoreArray.length - 1]),
+  });
+  await updateDoc(docRef, { records: arrayUnion(newScore) });
 }
 
 export { getSolutions, getRecords, saveNewHighScore };
