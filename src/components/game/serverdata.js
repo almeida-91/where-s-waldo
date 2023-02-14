@@ -32,20 +32,23 @@ async function getRecords(imageIndex) {
 
 // Saves the new high score and removes the lowest one from firebase
 async function saveNewHighScore(imageIndex, newScore) {
-  console.log("new score: " + newScore);
   const docRef = doc(db, "records", "image" + imageIndex);
 
   const docSnap = await getDoc(docRef);
   let scoreArray = docSnap.data().records;
-  console.log(scoreArray);
+
   scoreArray.push(newScore);
   scoreArray.sort((a, b) => a.score - b.score);
-  scoreArray.pop();
+  const lowestScore = scoreArray.pop();
   scoreArray = scoreArray.map((element) => Object.assign({}, element));
 
-  await updateDoc(docRef, {
-    records: arrayRemove(scoreArray[scoreArray.length - 1]),
-  });
+  // Remove lowest score if there are more than 5 highscores
+  if (scoreArray.length > 5) {
+    await updateDoc(docRef, {
+      records: arrayRemove(lowestScore),
+    });
+  }
+
   await updateDoc(docRef, { records: arrayUnion(newScore) });
 }
 

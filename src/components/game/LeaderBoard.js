@@ -8,7 +8,7 @@ const LeaderBoard = (props) => {
     let data = await getRecords(props.imageIndex);
     data = data.records;
     data = data.sort((a, b) => a.score - b.score);
-    data = data.map((highScore, index) => (
+    data = data.slice(0, 5).map((highScore, index) => (
       <tr key={index}>
         <td>{highScore.name}</td>
         <td>{highScore.time}</td>
@@ -18,8 +18,8 @@ const LeaderBoard = (props) => {
       <table>
         <thead>
           <tr>
-            <td>Name</td>
-            <td>Time</td>
+            <th>Name</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>{data}</tbody>
@@ -29,7 +29,6 @@ const LeaderBoard = (props) => {
 
   useEffect(() => {
     getScores();
-    console.log("success");
   }, [props.imageIndex]);
 
   return <div>{recordTable}</div>;

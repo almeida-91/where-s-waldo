@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "moment/locale/pt";
-import moment, { min } from "moment-timezone";
+import moment from "moment-timezone";
 
 import waldo1 from "./images/waldo1.jpeg";
 import waldo2 from "./images/waldo2.jpeg";
@@ -16,8 +16,6 @@ import odlaw from "./images/odlaw.webp";
 import { useState } from "react";
 import "./waldo.css";
 import { getRecords, getSolutions, saveNewHighScore } from "./serverdata";
-import { async } from "@firebase/util";
-import { wait } from "@testing-library/user-event/dist/utils";
 import { loggedUser } from "../googleSignin/logScreen";
 import LeaderBoard from "./LeaderBoard";
 
@@ -34,7 +32,6 @@ const Waldo = () => {
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
   const [initialTime, setInitialTime] = useState();
   const [foundCharacters, setFoundCharacters] = useState([]);
-  const [leaderBoard, setLeaderBoard] = useState([]);
   const [gameTime, setGameTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [globalMousePos, setGlobalMousePos] = useState({});
@@ -43,12 +40,13 @@ const Waldo = () => {
   const [markers, setMarkers] = useState();
   const [isNewHighScore, setIsNewHighScore] = useState(false);
   const [timeDelta, setTimeDelta] = useState();
-  const [score, setScore] = useState();
+  const [anonymousName, setAnonymousName] = useState("Anonymous");
 
   function handleMove(e) {
     let currentImage = document.getElementById("wally1");
-    setposX(e.pageX - currentImage.offsetLeft + currentImage.scrollLeft);
-    setposY(e.pageY - currentImage.offsetTop + currentImage.scrollTop);
+    let imageContainer = document.getElementsByClassName("imageContainer");
+    setposX(e.pageX - currentImage.offsetLeft);
+    setposY(e.pageY - imageContainer[0].offsetTop);
   }
 
   const handleClick = (e) => {
@@ -64,6 +62,8 @@ const Waldo = () => {
     } else {
       document.getElementById("popup").classList.remove("showPopUp");
     }
+    console.log("X: " + posX);
+    console.log("Y: " + posY);
   };
 
   const imageList = imageArray.map((image, index) => (
@@ -140,14 +140,11 @@ const Waldo = () => {
     const deltaY = clickPosition.y - answer.charCoordY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (distance < answer.charRadius) {
-      console.log(`Found ${selectedChar}`);
       if (!foundCharacters.includes(selectedChar)) {
+        console.log("found : " + selectedChar);
         setFoundCharacters([...foundCharacters, selectedChar]);
         setFoundPositions([...foundPositions, foundCharacter()]);
-        console.log(foundPositions);
       }
-    } else {
-      console.log("nope");
     }
   }
 
@@ -161,7 +158,7 @@ const Waldo = () => {
   };
 
   // Get coordinates and radius for the character we're checking
-  // from the backend
+  // from the backend server
   async function getCharacter(character, imageindex) {
     let answer = await getSolutions(imageindex);
     let characterCoords;
@@ -210,40 +207,42 @@ const Waldo = () => {
   // Get game time when player finds 5 characters
   useEffect(() => {
     if (foundCharacters.length === 5) {
-      console.log("found all chars");
       calculateTime();
-    } /* else {
-      async function findChars() {
-        await wait(3000);
-        setFoundCharacters([1, 2, 3, 4, 5]);
-      }
-      findChars();
-    } */
+    }
     getMarkers();
-  }, [foundCharacters, selectedImageIndex]);
+  }, [foundCharacters]);
 
   // Get leaderboard results when
   // player selects a picture
   useEffect(() => {
     restartGame();
     getScores();
-  }, [selectedImageIndex]);
+  }, []);
 
   // Check if the score is a high score
   const isHighScore = () => {
     const sortedScores = recordTable.sort((a, b) => a.score - b.score);
-    if (timeDelta < recordTable[4].score) {
+    if (timeDelta < sortedScores[4].score) {
       return true;
     }
     return false;
   };
 
   const newScore = () => {
-    const score = {
-      name: loggedUser.displayName,
-      time: gameTime,
-      score: timeDelta,
-    };
+    let score;
+    if (loggedUser) {
+      score = {
+        name: loggedUser.displayName,
+        time: gameTime,
+        score: timeDelta,
+      };
+    } else {
+      score = {
+        name: anonymousName,
+        time: gameTime,
+        score: timeDelta,
+      };
+    }
     return score;
   };
 
@@ -254,20 +253,30 @@ const Waldo = () => {
   // Show leaderboard when the game is finished
   const showLeaderBoard = (
     <div className="endGame">
-      {leaderBoard}
+      <LeaderBoard imageIndex={selectedImageIndex} />
       <div>
         {loggedUser ? (
-          <>
+          <div>
             <span>{loggedUser.displayName}</span>
-            <span>{gameTime}</span>
-          </>
+          </div>
         ) : (
-          <div></div>
+          <div>
+            <label htmlFor="anonymousScore">
+              <input
+                type="text"
+                defaultValue={anonymousName}
+                name="anonymousScore"
+                onChange={(e) => {
+                  setAnonymousName(e.target.value);
+                }}
+              ></input>
+            </label>
+          </div>
         )}
       </div>
       {endTime && isHighScore() ? (
         <div>
-          New High Score
+          New High Score <span>{gameTime}</span>
           <button onClick={saveHighScore}>Save High Score</button>
         </div>
       ) : null}
@@ -277,38 +286,12 @@ const Waldo = () => {
 
   const getScores = async () => {
     let recordsLog = null;
-    const records = async function () {
-      const data = await getRecords(selectedImageIndex);
-      recordsLog = data.records;
-      setRecordTable(recordsLog);
-    };
-    await records();
-    console.log("table: " + recordTable);
-    if (recordTable) {
-      let recordFormat = recordTable.map((record, index) => (
-        <tr key={index}>
-          <td>{record.name}</td>
-          <td>{record.time}</td>
-        </tr>
-      ));
-
-      setLeaderBoard(
-        <div>
-          <table>
-            <tbody>
-              <tr>
-                <th>Name</th>
-                <th>Record</th>
-              </tr>
-              {recordFormat}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
+    const data = await getRecords(selectedImageIndex);
+    recordsLog = data.records;
+    setRecordTable(recordsLog);
   };
 
-  const calculateTime = async () => {
+  const calculateTime = () => {
     setEndTime(new Date());
     const end = new Date();
     if (end) {
@@ -341,7 +324,7 @@ const Waldo = () => {
       <div>
         X: {posX} Y: {posY}
       </div>
-      {Image}
+      <div className="imageContainer">{Image}</div>
       {popup}
       <LeaderBoard imageIndex={selectedImageIndex} />
       {markers}

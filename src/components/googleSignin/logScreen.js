@@ -20,6 +20,7 @@ const LogScreen = () => {
     } else {
       setIsLoggedIn(false);
       setName("Anonymous");
+      loggedUser = null;
     }
   });
 
