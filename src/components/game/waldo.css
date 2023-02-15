@@ -43,10 +43,10 @@
 
 .foundChar {
     position: absolute;
-    color: greenyellow;
-    font-size: 100px;
-    font-weight: 800;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    height: 36px;
+    width: 36px;
+    border:  5px solid rgb(0, 255, 0);
+    border-radius: 100%;
 }
 
 .imageContainer {

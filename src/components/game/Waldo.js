@@ -44,9 +44,9 @@ const Waldo = () => {
 
   function handleMove(e) {
     let currentImage = document.getElementById("wally1");
-    let imageContainer = document.getElementsByClassName("imageContainer");
-    setposX(e.pageX - currentImage.offsetLeft);
-    setposY(e.pageY - imageContainer[0].offsetTop);
+    let imageContainer = document.getElementsByClassName("imageContainer")[0];
+    setposX(e.pageX - imageContainer.offsetLeft);
+    setposY(e.pageY - imageContainer.offsetTop);
   }
 
   const handleClick = (e) => {
@@ -62,8 +62,6 @@ const Waldo = () => {
     } else {
       document.getElementById("popup").classList.remove("showPopUp");
     }
-    console.log("X: " + posX);
-    console.log("Y: " + posY);
   };
 
   const imageList = imageArray.map((image, index) => (
@@ -111,8 +109,9 @@ const Waldo = () => {
   ));
 
   const foundCharacter = () => {
-    const x = globalMousePos.left - 50 + "px";
-    const y = globalMousePos.top - 50 + "px";
+    const imageContainer = document.getElementsByClassName("imageContainer")[0];
+    const x = posX - 18 - imageContainer.offsetLeft + "px";
+    const y = posY - 18 + "px";
     return { left: x, top: y };
   };
 
@@ -150,9 +149,7 @@ const Waldo = () => {
 
   const getMarkers = () => {
     const markers = foundPositions.map((position, index) => (
-      <div key={index} style={position} className="foundChar">
-        O
-      </div>
+      <div key={index} style={position} className="foundChar"></div>
     ));
     setMarkers(markers);
   };
@@ -324,10 +321,13 @@ const Waldo = () => {
       <div>
         X: {posX} Y: {posY}
       </div>
-      <div className="imageContainer">{Image}</div>
+      <div className="imageContainer">
+        {Image}
+        {markers}
+      </div>
       {popup}
       <LeaderBoard imageIndex={selectedImageIndex} />
-      {markers}
+
       {endTime ? showLeaderBoard : null}
     </div>
   );
