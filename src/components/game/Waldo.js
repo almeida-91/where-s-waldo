@@ -34,27 +34,24 @@ const Waldo = () => {
   const [foundCharacters, setFoundCharacters] = useState([]);
   const [gameTime, setGameTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-  const [globalMousePos, setGlobalMousePos] = useState({});
   const [recordTable, setRecordTable] = useState();
   const [foundPositions, setFoundPositions] = useState([]);
   const [markers, setMarkers] = useState();
   const [isNewHighScore, setIsNewHighScore] = useState(false);
   const [timeDelta, setTimeDelta] = useState();
   const [anonymousName, setAnonymousName] = useState("Anonymous");
+  const imageContainer = document.getElementsByClassName("imageContainer")[0];
 
-  function handleMove(e) {
-    let currentImage = document.getElementById("wally1");
-    let imageContainer = document.getElementsByClassName("imageContainer")[0];
-    setposX(e.pageX - imageContainer.offsetLeft);
-    setposY(e.pageY - imageContainer.offsetTop);
-  }
+  function handleMove(e) {}
 
   const handleClick = (e) => {
-    setClickPosition({ x: posX, y: posY });
-    setGlobalMousePos({
-      left: e.pageX,
-      top: e.pageY,
+    setClickPosition({
+      x: e.pageX - imageContainer.offsetLeft,
+      y: e.pageY - imageContainer.offsetTop,
     });
+    setposX(e.pageX);
+    setposY(e.pageY);
+
     setisActive(!isActive);
 
     if (isActive) {
@@ -109,24 +106,10 @@ const Waldo = () => {
   ));
 
   const foundCharacter = () => {
-    const imageContainer = document.getElementsByClassName("imageContainer")[0];
-    const x = posX - 18 - imageContainer.offsetLeft + "px";
-    const y = posY - 18 + "px";
+    const x = clickPosition.x - 18 + "px";
+    const y = clickPosition.y - 18 + "px";
     return { left: x, top: y };
   };
-
-  const popupStyle = {
-    left: globalMousePos.left + "px",
-    top: globalMousePos.top + "px",
-  };
-  const popup = (
-    <div style={popupStyle} id="popup" className="userClick">
-      <form onSubmit={submitAnswer}>
-        {characterSelection}
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  );
 
   // Check the backend to check if the mouse was clicked within that
   // character's radius
@@ -215,6 +198,19 @@ const Waldo = () => {
     restartGame();
     getScores();
   }, []);
+
+  const popupStyle = {
+    left: posX + "px",
+    top: posY + "px",
+  };
+  const popup = (
+    <div style={popupStyle} id="popup" className="userClick">
+      <form onSubmit={submitAnswer}>
+        {characterSelection}
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
 
   // Check if the score is a high score
   const isHighScore = () => {
