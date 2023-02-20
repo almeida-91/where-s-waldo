@@ -29,6 +29,7 @@ const Waldo = () => {
   const characters = ["Waldo", "Woof", "Wenda", "Whitebeard", "Odlaw"];
   const charImages = [waldo, woof, wenda, whitebeard, odlaw];
   const [selectedImageIndex, setSelectedImageIndex] = useState(1);
+  const [isImageSelected, setisImageSelected] = useState(false);
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
   const [initialTime, setInitialTime] = useState();
   const [foundCharacters, setFoundCharacters] = useState([]);
@@ -71,6 +72,7 @@ const Waldo = () => {
         setSelectedImageIndex(index + 1);
         setInitialTime(new Date());
         setFoundCharacters([]);
+        setisImageSelected(true);
         await getScores();
       }}
       alt="game preview"
@@ -299,6 +301,27 @@ const Waldo = () => {
     }
   };
 
+  const showGame = (
+    <div>
+      <button
+        onClick={() => {
+          setisImageSelected(false);
+        }}
+      >
+        Select another image
+      </button>
+      <div className="imageContainer">
+        {Image}
+        {markers}
+      </div>
+      {popup}
+      <LeaderBoard imageIndex={selectedImageIndex} />;
+      {endTime ? showLeaderBoard : null}
+    </div>
+  );
+
+  const imageSelect = { imageList };
+
   function restartGame() {
     setEndTime(null);
     setGameTime(null);
@@ -307,24 +330,17 @@ const Waldo = () => {
     setInitialTime(new Date());
     setIsNewHighScore(false);
     getScores();
+    setisImageSelected(false);
   }
 
   return (
     <div>
-      <div className="imagePreviewContainer">{imageList}</div>
       <p>Find the following characters in the picture:</p>
       <img src={charactersPic} alt="Characters" />
       <div>
         X: {posX} Y: {posY}
       </div>
-      <div className="imageContainer">
-        {Image}
-        {markers}
-      </div>
-      {popup}
-      <LeaderBoard imageIndex={selectedImageIndex} />
-
-      {endTime ? showLeaderBoard : null}
+      {isImageSelected ? showGame : imageList}
     </div>
   );
 };
