@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SignIn from "./signin";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import "./logscreen.css";
+import waldoLogo from "./images/logo.png";
 
 const auth = getAuth();
 export let loggedUser;
@@ -35,7 +36,7 @@ const LogScreen = () => {
           <div className="userPic">
             <img src={userPic} alt="user profile" />
 
-            <button onClick={handleClick}>Logout</button>
+            <button onClick={handleClick}>Sign Out</button>
           </div>
         ) : (
           <SignIn />
@@ -43,7 +44,10 @@ const LogScreen = () => {
         <span>Welcome, {name} </span>
       </div>
       <div>
-        <h1>Where's Waldo</h1>
+        <img src={waldoLogo}></img>
+      </div>
+      <div>
+        <h1>Where's Waldo??</h1>
       </div>
     </div>
   );

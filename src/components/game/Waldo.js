@@ -305,7 +305,7 @@ const Waldo = () => {
   };
 
   const showGame = (
-    <div>
+    <div className="mainGameDiv">
       <button
         onClick={() => {
           setisImageSelected(false);
@@ -324,9 +324,9 @@ const Waldo = () => {
   );
 
   const imageSelect = (
-    <div>
+    <div className="imageSelection">
       <p>Select a picture to start the game:</p>
-      {imageList}
+      <div className="imagePreviewContainer">{imageList}</div>
     </div>
   );
 
@@ -344,7 +344,7 @@ const Waldo = () => {
   return (
     <div className="waldoGame">
       <p>Find the following characters in the picture:</p>
-      <img src={charactersPic} alt="Characters" />
+      <img src={charactersPic} alt="Characters" className="charactersPic" />
       {isImageSelected ? showGame : imageSelect}
     </div>
   );

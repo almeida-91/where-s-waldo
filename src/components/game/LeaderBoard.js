@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getRecords } from "./serverdata";
+import "./leaderboard.css";
 
 const LeaderBoard = (props) => {
   const [recordTable, setRecordTable] = useState();
@@ -10,6 +11,7 @@ const LeaderBoard = (props) => {
     data = data.sort((a, b) => a.score - b.score);
     data = data.slice(0, 5).map((highScore, index) => (
       <tr key={index}>
+        <td>{index + 1}</td>
         <td>{highScore.name}</td>
         <td>{highScore.time}</td>
       </tr>
@@ -18,6 +20,7 @@ const LeaderBoard = (props) => {
       <table>
         <thead>
           <tr>
+            <th>Position</th>
             <th>Name</th>
             <th>Time</th>
           </tr>
@@ -31,7 +34,7 @@ const LeaderBoard = (props) => {
     getScores();
   }, [props.imageIndex]);
 
-  return <div>{recordTable}</div>;
+  return <div className="leaderBoard">{recordTable}</div>;
 };
 
 export default LeaderBoard;

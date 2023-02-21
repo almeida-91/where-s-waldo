@@ -1,8 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 .login {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 20px;
+    justify-content: space-evenly;
+    margin: 0;
+    background-color: red;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.login button {
+    border: none;
+    background-color: white;
+    color: red;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.login button:hover {
+    border: 2px solid black;
 }
 
 .userPic {
@@ -20,4 +40,9 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 100px;
 }
