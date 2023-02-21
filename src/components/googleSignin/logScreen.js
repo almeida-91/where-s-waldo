@@ -29,9 +29,8 @@ const LogScreen = () => {
   };
 
   return (
-    <div>
-      <div className="login">
-        <span>Welcome, {name} </span>
+    <div className="login">
+      <div className="userInfo">
         {isLoggedIn ? (
           <div className="userPic">
             <img src={userPic} alt="user profile" />
@@ -41,6 +40,10 @@ const LogScreen = () => {
         ) : (
           <SignIn />
         )}
+        <span>Welcome, {name} </span>
+      </div>
+      <div>
+        <h1>Where's Waldo</h1>
       </div>
     </div>
   );

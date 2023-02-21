@@ -1,0 +1,16 @@
+.footer {
+    background-color: gray;
+    color: white;
+    width: fit-content;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer a {
+    color: white;
+}

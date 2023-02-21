@@ -1,6 +1,8 @@
 .login {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin: 20px;
 }
 
 .userPic {
@@ -12,4 +14,10 @@
 .userPic img {
     border-radius: 100%;
     margin: 10px;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }

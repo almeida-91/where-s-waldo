@@ -108,8 +108,8 @@ const Waldo = () => {
   ));
 
   const foundCharacter = () => {
-    const x = clickPosition.x - 18 + "px";
-    const y = clickPosition.y - 18 + "px";
+    const x = clickPosition.x - 35 + "px";
+    const y = clickPosition.y - 35 + "px";
     return { left: x, top: y };
   };
 
@@ -251,8 +251,9 @@ const Waldo = () => {
       <LeaderBoard imageIndex={selectedImageIndex} />
       <div>
         {loggedUser ? (
-          <div>
+          <div className="currentScore">
             <span>{loggedUser.displayName}</span>
+            <span>{gameTime}</span>
           </div>
         ) : (
           <div>
@@ -266,12 +267,14 @@ const Waldo = () => {
                 }}
               ></input>
             </label>
+            <span>{gameTime}</span>
           </div>
         )}
       </div>
+
       {endTime && isHighScore() ? (
         <div>
-          New High Score <span>{gameTime}</span>
+          New High Score
           <button onClick={saveHighScore}>Save High Score</button>
         </div>
       ) : null}
@@ -315,12 +318,17 @@ const Waldo = () => {
         {markers}
       </div>
       {popup}
-      <LeaderBoard imageIndex={selectedImageIndex} />;
+      <LeaderBoard imageIndex={selectedImageIndex} />
       {endTime ? showLeaderBoard : null}
     </div>
   );
 
-  const imageSelect = { imageList };
+  const imageSelect = (
+    <div>
+      <p>Select a picture to start the game:</p>
+      {imageList}
+    </div>
+  );
 
   function restartGame() {
     setEndTime(null);
@@ -334,13 +342,10 @@ const Waldo = () => {
   }
 
   return (
-    <div>
+    <div className="waldoGame">
       <p>Find the following characters in the picture:</p>
       <img src={charactersPic} alt="Characters" />
-      <div>
-        X: {posX} Y: {posY}
-      </div>
-      {isImageSelected ? showGame : imageList}
+      {isImageSelected ? showGame : imageSelect}
     </div>
   );
 };
