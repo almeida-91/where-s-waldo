@@ -44,10 +44,10 @@ const LogScreen = () => {
         <span>Welcome, {name} </span>
       </div>
       <div>
-        <img src={waldoLogo}></img>
+        <img src={waldoLogo} alt="Waldo"></img>
       </div>
       <div>
-        <h1>Where's Waldo??</h1>
+        <h1>Where's Waldo</h1>
       </div>
     </div>
   );

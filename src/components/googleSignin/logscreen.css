@@ -3,12 +3,13 @@
 .login {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin: 0;
     background-color: red;
     color: white;
     font-size: 20px;
     font-weight: 600;
+    padding: 20px;
 }
 
 .login button {
@@ -16,13 +17,14 @@
     background-color: white;
     color: red;
     border-radius: 5px;
-    padding: 5px;
-    font-size: 15px;
-    font-weight: 500;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .login button:hover {
-    border: 2px solid black;
+    background-color: rgb(54, 54, 54);
+    color: white;
 }
 
 .userPic {
@@ -45,4 +47,10 @@
 h1 {
     font-family: 'Pacifico', cursive;
     font-size: 100px;
+    text-shadow:
+    1px 1px 0 #000,
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
 }

@@ -47,8 +47,8 @@ const Waldo = () => {
 
   const handleClick = (e) => {
     setClickPosition({
-      x: e.pageX - imageContainer.offsetLeft,
-      y: e.pageY - imageContainer.offsetTop,
+      x: e.pageX - imageContainer.offsetLeft - imageContainer.scrollLeft,
+      y: e.pageY - imageContainer.offsetTop - imageContainer.scrollTop,
     });
     setposX(e.pageX);
     setposY(e.pageY);
@@ -91,19 +91,21 @@ const Waldo = () => {
 
   const characterSelection = characters.map((character, index) => (
     <label htmlFor={character} key={index}>
-      <p className="inputLine">
-        <input
-          type={"radio"}
-          name="charSelect"
-          id={character}
-          value={character}
-          onChange={(e) => {
-            setSelectedChar(e.currentTarget.id.toLowerCase());
-          }}
-        />{" "}
+      <div className="inputLine">
+        <div>
+          <input
+            type={"radio"}
+            name="charSelect"
+            id={character}
+            value={character}
+            onChange={(e) => {
+              setSelectedChar(e.currentTarget.id.toLowerCase());
+            }}
+          />{" "}
+          <span>{character}</span>
+        </div>
         <img src={charImages[index]} alt={character} />
-        <span>{character}</span>
-      </p>
+      </div>
     </label>
   ));
 
@@ -309,6 +311,7 @@ const Waldo = () => {
       <button
         onClick={() => {
           setisImageSelected(false);
+          restartGame();
         }}
       >
         Select another image
@@ -339,12 +342,15 @@ const Waldo = () => {
     setIsNewHighScore(false);
     getScores();
     setisImageSelected(false);
+    setMarkers();
   }
 
   return (
     <div className="waldoGame">
-      <p>Find the following characters in the picture:</p>
-      <img src={charactersPic} alt="Characters" className="charactersPic" />
+      <div className="characterImage">
+        <p>Find the following characters in the picture:</p>
+        <img src={charactersPic} alt="Characters" className="charactersPic" />
+      </div>
       {isImageSelected ? showGame : imageSelect}
     </div>
   );
