@@ -47,7 +47,10 @@ const LogScreen = () => {
         <img src={waldoLogo} alt="Waldo"></img>
       </div>
       <div>
-        <h1>Where's Waldo</h1>
+        <h1>
+          <p>Where's</p>
+          <p>Waldo</p>
+        </h1>
       </div>
     </div>
   );

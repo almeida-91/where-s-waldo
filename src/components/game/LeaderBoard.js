@@ -34,7 +34,12 @@ const LeaderBoard = (props) => {
     getScores();
   }, [props.imageIndex]);
 
-  return <div className="leaderBoard">{recordTable}</div>;
+  return (
+    <div className="leaderBoard">
+      <h1>Leader Board</h1>
+      <div className="leaderBoard">{recordTable}</div>
+    </div>
+  );
 };
 
 export default LeaderBoard;

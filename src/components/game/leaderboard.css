@@ -1,7 +1,8 @@
 .leaderBoard {
     display: flex;
+    flex-direction: column;
     margin: auto;
-    justify-content: center;
+    align-items: center;
     width: 100%;
 }
 
@@ -32,4 +33,5 @@ th {
 table {
     width: 50%;
     border-collapse: collapse;
+    border-radius: 10px;
 }

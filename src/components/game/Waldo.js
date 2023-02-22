@@ -47,8 +47,8 @@ const Waldo = () => {
 
   const handleClick = (e) => {
     setClickPosition({
-      x: e.pageX - imageContainer.offsetLeft - imageContainer.scrollLeft,
-      y: e.pageY - imageContainer.offsetTop - imageContainer.scrollTop,
+      x: e.pageX - imageContainer.offsetLeft + imageContainer.scrollLeft,
+      y: e.pageY - imageContainer.offsetTop + imageContainer.scrollTop,
     });
     setposX(e.pageX);
     setposY(e.pageY);
