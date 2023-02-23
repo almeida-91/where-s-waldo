@@ -127,7 +127,6 @@ const Waldo = () => {
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (distance < answer.charRadius) {
       if (!foundCharacters.includes(selectedChar)) {
-        console.log("found : " + selectedChar);
         setFoundCharacters([...foundCharacters, selectedChar]);
         setFoundPositions([...foundPositions, foundCharacter()]);
       }
@@ -183,7 +182,7 @@ const Waldo = () => {
         };
         break;
       default:
-        console.log("Error: No character selected");
+        console.error("Error: No character selected");
     }
     return characterCoords;
   }
@@ -251,16 +250,60 @@ const Waldo = () => {
   const showLeaderBoard = (
     <div className="endGame">
       <LeaderBoard imageIndex={selectedImageIndex} />
-      <div>
+      <div className="currentScoreDiv">
         {loggedUser ? (
           <div className="currentScore">
-            <span>{loggedUser.displayName}</span>
-            <span>{gameTime}</span>
+            <table className="currentScore">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="currentScoreRow">
+                  <td>{loggedUser.displayName}</td>
+                  <td>{gameTime}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         ) : (
-          <div>
+          <div className="currentScoreDiv">
+            <table className="currentScore">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="currentScoreRow">
+                  <td>Anonymous</td>
+                  <td>{gameTime}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+      <div>
+        {endTime && loggedUser && isHighScore() ? (
+          <div className="highScoreDiv">
+            <p>Congratulations!! You got a new High Score!!</p>
+            <button id="saveHighScore" onClick={saveHighScore}>
+              Save High Score
+            </button>
+          </div>
+        ) : null}
+      </div>
+      <div>
+        {endTime && !loggedUser && isHighScore() ? (
+          <div className="highScoreDiv">
             <label htmlFor="anonymousScore">
+              Enter Your Name:
               <input
+                className="scoreInput"
                 type="text"
                 defaultValue={anonymousName}
                 name="anonymousScore"
@@ -269,18 +312,18 @@ const Waldo = () => {
                 }}
               ></input>
             </label>
-            <span>{gameTime}</span>
+            <p className="scoreCongrats">
+              Congratulations!! You got a new High Score!!
+            </p>
+            <button id="saveHighScore" onClick={saveHighScore}>
+              Save High Score
+            </button>
           </div>
-        )}
+        ) : null}
       </div>
-
-      {endTime && isHighScore() ? (
-        <div>
-          New High Score
-          <button onClick={saveHighScore}>Save High Score</button>
-        </div>
-      ) : null}
-      <button onClick={restartGame}>Reset</button>
+      <button id="resetGame" onClick={restartGame}>
+        Reset
+      </button>
     </div>
   );
 

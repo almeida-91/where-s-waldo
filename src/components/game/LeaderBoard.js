@@ -37,7 +37,7 @@ const LeaderBoard = (props) => {
   return (
     <div className="leaderBoard">
       <h1>Leader Board</h1>
-      <div className="leaderBoard">{recordTable}</div>
+      <div>{recordTable}</div>
     </div>
   );
 };
