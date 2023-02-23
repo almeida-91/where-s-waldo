@@ -205,3 +205,25 @@
 .currentScoreDiv {
     width: 100%;
 }
+
+@media screen and (max-device-width: 600px) {
+    .charactersPic {
+        width: 100%;
+    }
+
+    .imagePreviewContainer {
+        grid-template-rows: repeat(auto-fit,minmax(250px,1fr));
+        grid-template-columns: 1fr;
+        width: 90%;
+        margin: auto;
+    }
+
+    .imagePreview {
+        width: 100%;
+        height: auto;
+    }
+
+    .imageSelection {
+        display: grid;
+    }
+}

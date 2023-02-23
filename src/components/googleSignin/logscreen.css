@@ -54,3 +54,16 @@ h1 {
    -1px 1px 0 #000,
     1px 1px 0 #000;
 }
+
+@media screen and (max-device-width: 600px) {
+.login{
+    margin: auto;
+    }
+
+.login img,
+.login h1 {
+    display: none;
+}
+
+
+}
