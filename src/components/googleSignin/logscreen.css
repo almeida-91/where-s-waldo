@@ -57,8 +57,15 @@ h1 {
 
 @media screen and (max-device-width: 600px) {
 .login{
+    width: 100%;
+    padding: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.userInfo {
     margin: auto;
-    }
+}
 
 .login img,
 .login h1 {

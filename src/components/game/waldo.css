@@ -226,4 +226,15 @@
     .imageSelection {
         display: grid;
     }
+
+    .mainGameDiv {
+        padding: 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 100%;
+    }
+
+    .imageContainer {
+        width: 95%;
+    }
 }

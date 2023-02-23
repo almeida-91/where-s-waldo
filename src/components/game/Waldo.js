@@ -42,8 +42,7 @@ const Waldo = () => {
   const [timeDelta, setTimeDelta] = useState();
   const [anonymousName, setAnonymousName] = useState("Anonymous");
   const imageContainer = document.getElementsByClassName("imageContainer")[0];
-
-  function handleMove(e) {}
+  const [buttonText, setButtonText] = useState("Save High Score");
 
   const handleClick = (e) => {
     setClickPosition({
@@ -84,7 +83,6 @@ const Waldo = () => {
       id="wally1"
       src={selectedImage}
       alt="Where's Waldo game"
-      onMouseMove={handleMove}
       onClick={handleClick}
     />
   );
@@ -291,8 +289,14 @@ const Waldo = () => {
         {endTime && loggedUser && isHighScore() ? (
           <div className="highScoreDiv">
             <p>Congratulations!! You got a new High Score!!</p>
-            <button id="saveHighScore" onClick={saveHighScore}>
-              Save High Score
+            <button
+              id="saveHighScore"
+              onClick={() => {
+                saveHighScore();
+                setButtonText("High Score Saved!");
+              }}
+            >
+              {buttonText}
             </button>
           </div>
         ) : null}
@@ -315,8 +319,14 @@ const Waldo = () => {
             <p className="scoreCongrats">
               Congratulations!! You got a new High Score!!
             </p>
-            <button id="saveHighScore" onClick={saveHighScore}>
-              Save High Score
+            <button
+              id="saveHighScore"
+              onClick={() => {
+                saveHighScore();
+                setButtonText("High Score Saved!");
+              }}
+            >
+              {buttonText}
             </button>
           </div>
         ) : null}
