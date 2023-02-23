@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+}
+
+.userClick {
+    width: 250px;
+    height: fit-content;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    display: none;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-bottom: 10px;
+}
+
+.userClick form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    font-weight: 550;
+}
+
+
+
+.showPopUp {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputLine {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    justify-content: space-between;
+}
+
+
+
+.imagePreview {
+    width: 600px;
+    height: 380px;
+    border: 3px solid rgb(255, 0, 0);
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.imagePreviewContainer {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr;
+    width: 50%;
+    gap: 20px;
+}
+
+.endGame {
+    background:rgba(0, 0, 0, 0.7);
+    position:fixed;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.foundChar {
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    border:  5px solid rgb(0, 255, 0);
+    border-radius: 100%;
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    margin: auto;
+    border-radius: 10px;
+    border: 5px solid white;
+    background-color: white;
+}
+
+.waldoGame {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 20px;
+}
+
+.waldoGame img {
+    margin: auto;
+    border-radius: 10px;
+}
+
+.imageSelection {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
+}
+
+.mainGameDiv {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    padding: 20px;
+    gap: 20px;
+}
+
+.mainGameDiv button {
+    margin: auto;
+    border: none;
+    background-color: white;
+    color: red;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.mainGameDiv button:hover {
+    background-color: rgb(54, 54, 54);
+    color: white;
+}
+
+.characterImage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    color: rgb(54, 54, 54);
+}
+
+.characterImage img {
+    border: 3px solid red;
+    border-radius: 10px;
+}
+
+.inputLine img {
+    margin: 0;
+}
+
+#resetGame {
+    font-size: 16px;
+    background-color: rgb(120, 0, 0);
+    color: white;
+}
+
+#resetGame:hover {
+    background-color: rgb(255, 0, 0);
+    
+}
+
+#saveHighScore {
+    background-color: rgb(2, 175, 2);
+    color: white;
+    font-size: 16px;
+}
+
+#saveHighScore:hover {
+    background-color: rgb(0, 255, 0);
+}
+
+.highScoreDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+    font-size: 28px;
+}
+
+.scoreInput {
+    background-color: gray;
+    color: white;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.scoreInput:focus {
+    outline: none;
+}
+
+#currentScoreRow {
+    background-color: rgb(0, 0, 0);
+}
+
+.currentScore {
+    width: 30%;
+    margin: auto;
+}
+
+.currentScoreDiv {
+    width: 100%;
+}

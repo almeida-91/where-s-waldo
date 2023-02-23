@@ -1,0 +1,17 @@
+.footer {
+    background-color: gray;
+    color: white;
+    width: fit-content;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer a {
+    color: white;
+}
