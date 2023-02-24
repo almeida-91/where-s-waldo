@@ -237,4 +237,9 @@
     .imageContainer {
         width: 95%;
     }
+
+    .highScoreDiv label,
+    .highScoreDiv p {
+        text-align: center;
+    }
 }
