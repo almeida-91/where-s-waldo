@@ -39,13 +39,3 @@ table {
 .leaderBoard div {
     width: 50%;
 }
-
-@media screen and (max-device-width: 600px) {
-    .leaderBoard div {
-        width: 100%;
-    }
-
-    h1 {
-        font-size: 50px;
-    }
-}
